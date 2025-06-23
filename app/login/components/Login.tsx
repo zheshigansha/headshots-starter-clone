@@ -16,10 +16,8 @@ type Inputs = {
 };
 
 export const Login = ({
-  host,
   searchParams,
 }: {
-  host: string | null;
   searchParams?: { [key: string]: string | string[] | undefined };
 }) => {
   const supabase = createClientComponentClient<Database>();
@@ -63,8 +61,10 @@ export const Login = ({
     inviteToken = searchParams["inviteToken"];
   }
 
-  const protocol = host?.includes("localhost") ? "http" : "https";
-  const redirectUrl = `${protocol}://${host}/auth/callback`;
+  const redirectUrl =
+    typeof window !== "undefined"
+      ? `${window.location.origin}/auth/callback`
+      : "";
 
   console.log({ redirectUrl });
 
