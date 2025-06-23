@@ -86,7 +86,7 @@ export async function POST(request: Request) {
         .from("credits")
         .insert({
           user_id: user.id,
-          credits: 0,
+          credits: 1,
         });
 
       if (errorCreatingCredits) {
@@ -131,10 +131,11 @@ export async function POST(request: Request) {
     .single();
 
   if (modelError) {
-    console.error("modelError: ", modelError);
+    console.error("DATABASE INSERT ERROR (attempt 2): ", modelError);
     return NextResponse.json(
       {
-        message: "Something went wrong!",
+        message: "Database insert failed! See 'error' object for details.",
+        error: modelError,
       },
       { status: 500 }
     );

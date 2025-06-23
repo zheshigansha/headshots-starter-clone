@@ -64,12 +64,12 @@ export default function TrainModelZone({ packSlug }: { packSlug: string }) {
           (file: File) => !files.some((f) => f.name === file.name)
         ) || [];
 
-      // if user tries to upload more than 10 files, display a toast
-      if (newFiles.length + files.length > 10) {
+      // if user tries to upload more than 4 files, display a toast
+      if (newFiles.length + files.length > 4) {
         toast({
           title: "Too many images",
           description:
-            "You can only upload up to 10 images in total. Please try again.",
+            "You can only upload up to 4 images in total. Please try again.",
           duration: 5000,
         });
         return;
@@ -122,6 +122,15 @@ export default function TrainModelZone({ packSlug }: { packSlug: string }) {
   };
 
   const trainModel = useCallback(async () => {
+    if (files.length < 4) {
+      toast({
+        title: "Not enough images",
+        description: "You need to upload at least 4 images to train a model.",
+        duration: 5000,
+      });
+      return;
+    }
+
     setIsLoading(true);
     // Upload each file to Vercel blob and store the resulting URLs
     const blobUrls = [];
@@ -156,29 +165,25 @@ export default function TrainModelZone({ packSlug }: { packSlug: string }) {
       body: JSON.stringify(payload),
     });
 
-    setIsLoading(false);
-
     if (!response.ok) {
       const responseData = await response.json();
-      const responseMessage: string = responseData.message;
+      const responseMessage =
+        responseData.error?.message ||
+        responseData.message ||
+        "Something went wrong";
       console.error("Something went wrong! ", responseMessage);
-      const messageWithButton = (
-        <div className="flex flex-col gap-4">
-          {responseMessage}
-          <a href="/get-credits">
-            <Button size="sm">Get Credits</Button>
-          </a>
-        </div>
-      );
+
       toast({
         title: "Something went wrong!",
-        description: responseMessage.includes("Not enough credits")
-          ? messageWithButton
-          : responseMessage,
+        description: responseMessage,
         duration: 5000,
+        variant: "destructive",
       });
+      setIsLoading(false);
       return;
     }
+
+    setIsLoading(false);
 
     toast({
       title: "Model queued for training",
@@ -187,8 +192,9 @@ export default function TrainModelZone({ packSlug }: { packSlug: string }) {
       duration: 5000,
     });
 
-    router.push("/");
-  }, [files, characteristics, form, packSlug]);
+    // Instead of resetting the form, redirect to the models page
+    router.push("/overview/models");
+  }, [files, characteristics, form, packSlug, toast, router]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -295,8 +301,7 @@ export default function TrainModelZone({ packSlug }: { packSlug: string }) {
           >
             <FormLabel>Samples</FormLabel>
             <FormDescription>
-              Upload 4-10 images of the person you want to generate headshots
-              for.
+              Upload 2-4 images of the person you want to generate headshots for.
             </FormDescription>
             <div className="outline-dashed outline-2 outline-gray-100 hover:outline-blue-500 w-full h-full rounded-md p-4 flex justify-center align-middle">
               <input {...getInputProps()} />
@@ -342,10 +347,22 @@ export default function TrainModelZone({ packSlug }: { packSlug: string }) {
             </div>
           )}
 
-          <Button type="submit" className="w-full" disabled={isLoading}>
-            Train Model{" "}
-            {stripeIsConfigured && <span className="ml-1">(1 Credit)</span>}
-          </Button>
+          <div className="flex justify-end w-full">
+            <Button
+              type="submit"
+              size="lg"
+              disabled={isLoading || files.length < 2}
+            >
+              {isLoading ? (
+                <div className="flex items-center gap-2">Training...</div>
+              ) : (
+                <>
+                  Train Model{" "}
+                  {stripeIsConfigured && <span className="ml-1">(1 Credit)</span>}
+                </>
+              )}
+            </Button>
+          </div>
         </form>
       </Form>
     </div>

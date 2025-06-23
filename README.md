@@ -30,6 +30,10 @@ Here is how it looks
 
 Live demo **[here](https://getheadshots.ai)**.
 
+### Feature Customizations
+
+- **Free Trial for New Users**: To improve user experience and onboarding, we have modified the default behavior. Newly registered users will now automatically receive **1 free credit**, allowing them to try the service once at no cost. This change was made in `app/astria/train-model/route.ts` by setting the initial credit amount to 1. You can adjust this number based on your operational costs and marketing strategy.
+
 The app is powered by:
 
 - 🚀 [Astria](https://www.astria.ai/) for AI model training & inference
@@ -271,3 +275,10 @@ If you want to contribute to the codebase make sure you create a new branch and 
 ## License
 
 Headshot AI is released under the [MIT License](https://choosealicense.com/licenses/mit/).
+
+---
+
+### Project Milestone: Pre-Deployment Finalization
+
+- **Date**: June 23, 2024
+- **Status**: All core features are fully functional in the local development environment. Key customizations, including a free trial for new users, have been implemented and documented. The project is now reviewed, finalized, and ready for its first deployment. This marks the successful completion of the local development and debugging phase.
