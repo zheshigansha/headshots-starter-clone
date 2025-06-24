@@ -98,14 +98,8 @@ export async function POST(request: Request) {
           { status: 500 }
         );
       }
-
-      return NextResponse.json(
-        {
-          message:
-            "Not enough credits, please purchase some credits and try again.",
-        },
-        { status: 500 }
-      );
+      // 新用户插入1 credit后，credits变量需要模拟为1 credit，继续后续流程
+      _credits = [{ credits: 1 }];
     } else if (credits[0]?.credits < 1) {
       return NextResponse.json(
         {

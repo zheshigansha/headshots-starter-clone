@@ -6,6 +6,7 @@ import { Resend } from "resend";
 export const dynamic = "force-dynamic";
 
 const resendApiKey = process.env.RESEND_API_KEY;
+const resendFromEmail = process.env.RESEND_FROM_EMAIL || "noreply@yourdomain.com";
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
@@ -127,7 +128,7 @@ export async function POST(request: Request) {
     if (resendApiKey) {
       const resend = new Resend(resendApiKey);
       await resend.emails.send({
-        from: "noreply@aipic.cfd",
+        from: resendFromEmail,
         to: user?.email ?? "",
         subject: "Your model was successfully trained!",
         html: `<h2>We're writing to notify you that your model training was successful! 1 credit has been used from your account.</h2>`,

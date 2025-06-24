@@ -28,8 +28,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className="min-h-screen flex flex-col bg-background">
+    <html lang="en" suppressHydrationWarning translate="no" className="notranslate">
+      <head>
+        <meta name="google" content="notranslate" />
+      </head>
+      <body className="min-h-screen flex flex-col bg-background notranslate">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <AnnouncementBar />
           {/* Remove the section wrapper as it's interfering with sticky positioning */}

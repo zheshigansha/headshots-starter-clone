@@ -10,6 +10,7 @@ import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AiOutlineGoogle } from "react-icons/ai";
 import { WaitingForMagicLink } from "./WaitingForMagicLink";
+import { useI18n } from "@/lib/i18n";
 
 type Inputs = {
   email: string;
@@ -20,6 +21,7 @@ export const Login = ({
 }: {
   searchParams?: { [key: string]: string | string[] | undefined };
 }) => {
+  const { t } = useI18n();
   const supabase = createClientComponentClient<Database>();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isMagicLinkSent, setIsMagicLinkSent] = useState(false);
@@ -38,8 +40,8 @@ export const Login = ({
       setTimeout(() => {
         setIsSubmitting(false);
         toast({
-          title: "Email sent",
-          description: "Check your inbox for a magic link to sign in.",
+          title: t("login.emailSent"),
+          description: t("login.emailSentDescription"),
           duration: 5000,
         });
         setIsMagicLinkSent(true);
@@ -47,10 +49,9 @@ export const Login = ({
     } catch (error) {
       setIsSubmitting(false);
       toast({
-        title: "Something went wrong",
+        title: t("login.somethingWentWrong"),
         variant: "destructive",
-        description:
-          "Please try again, if the problem persists, contact us at hello@tryleap.ai",
+        description: t("login.tryAgainDescription"),
         duration: 5000,
       });
     }
@@ -102,19 +103,19 @@ export const Login = ({
     <>
       <div className="flex items-center justify-center p-8">
         <div className="flex flex-col gap-4 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 p-4 rounded-xl max-w-sm w-full">
-          <h1 className="text-xl">Welcome</h1>
+          <h1 className="text-xl">{t("login.title")}</h1>
           <p className="text-xs opacity-60">
-            Sign in or create an account to get started.
+            {t("login.subtitle")}
           </p>
-          {/* <Button
+          <Button
             onClick={signInWithGoogle}
             variant={"outline"}
             className="font-semibold"
           >
             <AiOutlineGoogle size={20} />
-            Continue with Google
+            {t("login.continueWithGoogle")}
           </Button>
-          <OR /> */}
+          <OR />
 
           <form
             onSubmit={handleSubmit(onSubmit)}
@@ -124,7 +125,7 @@ export const Login = ({
               <div className="flex flex-col gap-2">
                 <Input
                   type="email"
-                  placeholder="Email"
+                  placeholder={t("login.emailPlaceholder")}
                   {...register("email", {
                     required: true,
                     validate: {
@@ -155,7 +156,7 @@ export const Login = ({
               className="w-full"
               type="submit"
             >
-              Continue with Email
+              {t("login.continueWithEmail")}
             </Button>
           </form>
         </div>
@@ -165,10 +166,12 @@ export const Login = ({
 };
 
 export const OR = () => {
+  const { t } = useI18n();
+  
   return (
     <div className="flex items-center my-1">
       <div className="border-b flex-grow mr-2 opacity-50" />
-      <span className="text-sm opacity-50">OR</span>
+      <span className="text-sm opacity-50">{t("login.or")}</span>
       <div className="border-b flex-grow ml-2 opacity-50" />
     </div>
   );

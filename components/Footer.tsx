@@ -1,137 +1,92 @@
-import Link from "next/link";
+"use client";
+
 import { Camera } from "lucide-react";
+import Link from "next/link";
+import { useI18n } from "@/lib/i18n";
 
 export default function Footer() {
+  const { t } = useI18n();
+  
   return (
-    <footer className="border-t py-12 md:py-16">
-      <div className="container px-4 md:px-6">
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-          <div className="space-y-4">
-            <Link href="/" className="flex items-center gap-2 font-bold text-xl">
+    <footer className="border-t bg-background">
+      <div className="container py-8 md:py-12">
+        <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
+          <div className="col-span-2 md:col-span-1">
+            <Link href="/" className="flex items-center gap-2 font-bold text-lg mb-4">
               <Camera className="h-5 w-5 text-primary" />
-              <span>Headshots AI</span>
+              <span translate="no">{t('nav.brand')}</span>
             </Link>
             <p className="text-sm text-muted-foreground">
-              Professional AI-generated headshots for your online presence.
+              {t("footer.description")}
             </p>
           </div>
-          <div className="space-y-4">
-            <h3 className="text-sm font-medium">Product</h3>
-            <ul className="space-y-2">
+          
+          <div>
+            <h3 className="font-semibold mb-3">{t("footer.product")}</h3>
+            <ul className="space-y-2 text-sm">
               <li>
-                <Link href="#how-it-works" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  How It Works
+                <Link href="/overview" className="text-muted-foreground hover:text-foreground">
+                  {t("footer.dashboard")}
                 </Link>
               </li>
               <li>
-                <Link href="#examples" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  Examples
+                <Link href="/overview/models" className="text-muted-foreground hover:text-foreground">
+                  {t("footer.models")}
                 </Link>
               </li>
               <li>
-                <Link href="#pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  Pricing
-                </Link>
-              </li>
-            </ul>
-          </div>
-          <div className="space-y-4">
-            <h3 className="text-sm font-medium">Resources</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link 
-                  href="https://github.com/astriaai/headshots-starter" 
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  target="_blank"
-                >
-                  GitHub
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  href="https://docs.astria.ai/docs/api/pack/pack/" 
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  target="_blank"
-                >
-                  Documentation
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  href="https://twitter.com/Astria_AI" 
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  target="_blank"
-                >
-                  Twitter
+                <Link href="/overview/packs" className="text-muted-foreground hover:text-foreground">
+                  {t("footer.packs")}
                 </Link>
               </li>
             </ul>
           </div>
-          <div className="space-y-4">
-            <h3 className="text-sm font-medium">Legal</h3>
-            <ul className="space-y-2">
+          
+          <div>
+            <h3 className="font-semibold mb-3">{t("footer.resources")}</h3>
+            <ul className="space-y-2 text-sm">
               <li>
-                <Link 
-                  href="mailto:support@astria.ai" 
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Contact
+                <Link href="/docs" className="text-muted-foreground hover:text-foreground">
+                  {t("footer.documentation")}
                 </Link>
               </li>
               <li>
-                <Link 
-                  href="https://choosealicense.com/licenses/mit/" 
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  target="_blank"
-                >
-                  License
+                <Link href="/api" className="text-muted-foreground hover:text-foreground">
+                  {t("footer.apiReference")}
+                </Link>
+              </li>
+              <li>
+                <Link href="/support" className="text-muted-foreground hover:text-foreground">
+                  {t("footer.support")}
+                </Link>
+              </li>
+            </ul>
+          </div>
+          
+          <div>
+            <h3 className="font-semibold mb-3">{t("footer.company")}</h3>
+            <ul className="space-y-2 text-sm">
+              <li>
+                <Link href="/about" className="text-muted-foreground hover:text-foreground">
+                  {t("footer.about")}
+                </Link>
+              </li>
+              <li>
+                <Link href="/privacy" className="text-muted-foreground hover:text-foreground">
+                  {t("footer.privacyPolicy")}
+                </Link>
+              </li>
+              <li>
+                <Link href="/terms" className="text-muted-foreground hover:text-foreground">
+                  {t("footer.termsOfService")}
                 </Link>
               </li>
             </ul>
           </div>
         </div>
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t pt-8 md:flex-row">
-          <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Headshots AI. All rights reserved.
-          </p>
-          <div className="flex items-center gap-4">
-            <p className="text-sm text-muted-foreground">
-              Open-source powered by{" "}
-              <Link
-                href="https://www.astria.ai/"
-                className="text-primary hover:underline"
-                target="_blank"
-              >
-                Astria
-              </Link>
-              ,{" "}
-              <Link
-                href="https://supabase.com/"
-                className="text-primary hover:underline"
-                target="_blank"
-              >
-                Supabase
-              </Link>
-              , and{" "}
-              {process.env.DEPLOYMENT_PROVIDER === "replit" ? (
-                <Link
-                  href="https://replit.com/@leap-ai/Headshot-AI-Professional-Headshots-with-Leap-AI"
-                  className="text-primary hover:underline"
-                  target="_blank"
-                >
-                  Replit
-                </Link>
-              ) : (
-                <Link
-                  href="https://vercel.com/"
-                  className="text-primary hover:underline"
-                  target="_blank"
-                >
-                  Vercel
-                </Link>
-              )}
-            </p>
-          </div>
+        
+        <div className="border-t mt-8 pt-8 text-center text-sm text-muted-foreground">
+          <p>© 2024 <span translate="no">{t('nav.brand')}</span>. {t("footer.allRightsReserved")}</p>
         </div>
       </div>
     </footer>

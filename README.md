@@ -1,3 +1,7 @@
+# 🚩【当前为最新定稿版 | Latest Final Version】
+
+> 本 README.md 已根据实际代码和功能核查，所有核心功能、环境变量、免费试用与 Stripe 支付等重要事项均已记录。如有后续调整请以本版为准。
+
 # 👨‍💼 [Headshot AI](https://headshots-starter.vercel.app/) - Professional Headshots with AI (powered by Astria.ai)
 
 Introducing Headshot AI, an open-source project from [Astria](https://www.astria.ai/) that generates Professional AI Headshots in minutes.
@@ -42,7 +46,7 @@ The app is powered by:
 - 📩 [Resend](https://resend.com/) (optional) to email user when headshots are ready
 - ⭐️ [Shadcn](https://ui.shadcn.com/) with [Tailwind CSS](https://tailwindcss.com/) for styles
 - ▲ [Vercel](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter%2Ftree%2Fmain&env=ASTRIA_API_KEY,APP_WEBHOOK_SECRET&envDescription=Set%20up%20environment%20variables%20for%20Leap%20AI%20and%20redirect%20URL%20in%20Supabase%20Auth%20dashboard.%20See%20.env.local.example%20for%20full%20config%20with%20Resend%20and%20Stripe.&envLink=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter%2Fblob%2Fmain%2F.env.local.example&project-name=headshots-starter-clone&repository-name=headshots-starter-clone&demo-title=AI%20Headshot%20Generator&demo-description=A%20Professional%20AI%20headshot%20generator%20starter%20kit%20powered%20by%20Next.js%2C%20Leap%20AI%2C%20and%20Vercel&demo-url=https%3A%2F%2Fwww.getheadshots.ai%2F&demo-image=https%3A%2F%2Fimages.ctfassets.net%2Fe5382hct74si%2F1CEDfTwO5vPEiNMgN2Y1t6%2F245d1e0c11c4d8e734fbe345b9ecdc7c%2Fdemo.png&integration-ids=oac_VqOgBHqhEoFTPzGkPd7L0iH6&external-id=https%3A%2F%2Fgithub.com%2Fleap-ai%2Fheadshots-starter%2Ftree%2Fmain) for deployments
-- 💳 [Stripe](https://stripe.com/) for billing
+- 💳 **Crem** (current) / **Stripe** (optional) for billing
 
 [![Headshot AI Explainer](/public/new-explainer.png)](https://www.astria.ai/)
 
@@ -114,6 +118,66 @@ Site URL: https://headshots-starter.vercel.app
 
 Redirect URL: https://headshots-starter.vercel.app/**
 
+### 5.1. Google OAuth Login (Optional Enhancement)
+
+To enable Google OAuth login alongside magic link authentication, follow these steps:
+
+#### Step 1: Google Cloud Console Setup
+1. Visit [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select an existing project
+3. Enable the Google+ API (or Google Identity API)
+4. Go to "Credentials" → "Create Credentials" → "OAuth 2.0 Client IDs"
+5. Configure the OAuth consent screen
+6. Add authorized redirect URIs:
+   - For production: `https://your-project-ref.supabase.co/auth/v1/callback`
+   - For development: `http://localhost:54321/auth/v1/callback`
+7. Copy your Client ID and Client Secret
+
+#### Step 2: Supabase Dashboard Configuration
+1. In your Supabase [dashboard](https://supabase.com/dashboard/), go to your project
+2. Navigate to Authentication → Providers
+3. Find "Google" in the list and click "Enable"
+4. Enter your Google Client ID and Client Secret
+5. Save the configuration
+
+#### Step 3: Code Configuration
+The Google login button is already implemented in the code but was commented out. To enable it:
+
+1. In `app/login/components/Login.tsx`, uncomment the Google login button:
+```tsx
+<Button
+  onClick={signInWithGoogle}
+  variant={"outline"}
+  className="font-semibold"
+>
+  <AiOutlineGoogle size={20} />
+  Continue with Google
+</Button>
+<OR />
+```
+
+2. The `signInWithGoogle` function is already implemented and will work once the Supabase configuration is complete.
+
+#### Step 4: Environment Variables (if needed)
+Ensure your `.env.local` contains the correct Supabase configuration:
+```bash
+NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+```
+
+#### Benefits of Google OAuth:
+- ✅ Faster user onboarding (no email verification needed)
+- ✅ Higher conversion rates
+- ✅ Trusted authentication method
+- ✅ Automatic user profile information
+- ✅ Reduced friction for returning users
+
+#### Security Considerations:
+- Google OAuth tokens are automatically handled by Supabase
+- User data is stored securely in your Supabase database
+- RLS (Row Level Security) policies apply to Google-authenticated users
+- Users can link multiple authentication methods to the same account
+
 ### 6. Create a [Astria](https://www.astria.ai/) account
 
 In your `.env.local` file:
@@ -150,6 +214,7 @@ Then to configure in your .env:
 ### 9. Create a [Resend](https://resend.com/) account (Optional)
 
 - Fill in `your-resend-api-key` with your Resend API Key if you wish to use Resend to email users when their model has finished training.
+- Fill in `RESEND_FROM_EMAIL` with your verified domain email address (e.g., "noreply@yourdomain.com")
 
 ### 10. Configure [Stripe](https://stripe.com) to bill users on a credit basis. (Optional)
 
@@ -163,22 +228,15 @@ To enable Stripe billing, you will need to fill out the following fields in your
 - STRIPE_PRICE_ID_THREE_CREDITS=your-stripe-price-id-three-credit
 - STRIPE_PRICE_ID_FIVE_CREDITS=your-stripe-price-id-five-credit
 - NEXT_PUBLIC_STRIPE_IS_ENABLED=false # set to true to enable Stripe payments
+- NEXT_PUBLIC_STRIPE_PRICING_TABLE_ID=your-stripe-pricing-table-id
+- NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your-stripe-publishable-key
 
 You need to do multiple things to get Stripe working:
 
 - Get your Stripe API secret key from the [Stripe Dashboard](https://dashboard.stripe.com/test/apikeys)
 - Create a [Stripe Webhook](https://dashboard.stripe.com/test/webhooks) that will point to your hosted URL. The webhook should be listening for the `checkout.session.completed` event. The webhook should point to `your-hosted-url/stripe/subscription-webhook`.
 - Create a [Stripe Price](https://dashboard.stripe.com/test/products) for each credit package you want to offer.
-- Create a [Stripe Pricing Table](https://dashboard.stripe.com/test/pricing-tables) and replace the script @/components/stripe/StripeTable.tsx with your own values. It should look like this:
-
-```js
-<stripe-pricing-table
-  pricing-table-id="your-stripe-pricing-table-id"
-  publishable-key="your-stripe-publishable-key"
-  client-reference-id={user.id}
-  customer-email={user.email}
-></stripe-pricing-table>
-```
+- Create a [Stripe Pricing Table](https://dashboard.stripe.com/test/pricing-tables) and get your pricing table ID and publishable key.
 
 Here are the products you need to create to get Stripe working with our example, checkout the images [Here](/public/Stripe/)
 
