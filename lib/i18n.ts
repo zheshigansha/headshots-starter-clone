@@ -99,7 +99,25 @@ const messages = {
       save: "Save",
       delete: "Delete",
       edit: "Edit",
-      close: "Close"
+      close: "Close",
+      goBack: "Go Back"
+    },
+    credits: {
+      title: "Buy Credits",
+      description: "Purchase credits to generate amazing AI headshots",
+      disabled: "Payment system is currently unavailable. Please try again later.",
+      credits: "Credits",
+      popular: "Most Popular",
+      perCredit: "per credit",
+      buyNow: "Buy Now",
+      processing: "Processing...",
+      whatIncluded: "What's Included",
+      feature1: "High-quality AI headshots",
+      feature2: "Multiple style options",
+      feature3: "Fast processing",
+      feature4: "Download in HD",
+      securePayment: "Secure payment powered by Creem",
+      instantDelivery: "Credits delivered instantly after payment"
     }
   },
   zh: {
@@ -198,7 +216,25 @@ const messages = {
       save: "保存",
       delete: "删除",
       edit: "编辑",
-      close: "关闭"
+      close: "关闭",
+      goBack: "返回"
+    },
+    credits: {
+      title: "购买积分",
+      description: "购买积分来生成精美的AI头像",
+      disabled: "支付系统暂时不可用，请稍后再试。",
+      credits: "积分",
+      popular: "最受欢迎",
+      perCredit: "每积分",
+      buyNow: "立即购买",
+      processing: "处理中...",
+      whatIncluded: "包含内容",
+      feature1: "高质量AI头像",
+      feature2: "多种风格选择",
+      feature3: "快速处理",
+      feature4: "高清下载",
+      securePayment: "由Creem提供安全支付",
+      instantDelivery: "付款后即时交付积分"
     }
   }
 } as const;
@@ -209,12 +245,16 @@ interface I18nStore {
   locale: Locale;
   setLocale: (locale: Locale) => void;
   t: (key: string) => string;
+  hasHydrated: boolean;
+  setHasHydrated: (state: boolean) => void;
 }
 
 export const useI18n = create<I18nStore>()(
   persist(
     (set, get) => ({
       locale: 'en' as Locale,
+      hasHydrated: false,
+      setHasHydrated: (state: boolean) => set({ hasHydrated: state }),
       setLocale: (locale: Locale) => set({ locale }),
       t: (key: string) => {
         const { locale } = get();
@@ -230,6 +270,9 @@ export const useI18n = create<I18nStore>()(
     }),
     {
       name: 'language-storage',
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+      },
     }
   )
 );

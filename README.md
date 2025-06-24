@@ -336,7 +336,80 @@ Headshot AI is released under the [MIT License](https://choosealicense.com/licen
 
 ---
 
+## 💳 **Creem.io Payment Integration**
+
+**We are using Creem.io as our primary payment method** for credit-based billing.
+
+### Setting up Creem.io Payment System
+
+#### 1. Create Creem Account
+1. Go to [Creem.io](https://www.creem.io/) and sign up
+2. Complete the onboarding process
+3. Get your API key from the Developer settings
+
+#### 2. Create Products in Creem Dashboard
+Create the following products in your Creem dashboard:
+- **1 Credit Package**: $5 USD
+- **3 Credits Package**: $12 USD  
+- **5 Credits Package**: $18 USD
+
+#### 3. Configure Environment Variables
+Add these to your `.env.local` file:
+
+```bash
+# Enable Creem Payment System
+NEXT_PUBLIC_CREEM_IS_ENABLED=true
+
+# Creem API Configuration
+CREEM_API_KEY=your_creem_api_key_here
+CREEM_TEST_MODE=true  # Set to false for production
+
+# Product IDs from Creem Dashboard
+NEXT_PUBLIC_CREEM_PRODUCT_1_CREDIT=prod_xxx_1_credit
+NEXT_PUBLIC_CREEM_PRODUCT_3_CREDITS=prod_xxx_3_credits
+NEXT_PUBLIC_CREEM_PRODUCT_5_CREDITS=prod_xxx_5_credits
+```
+
+#### 4. Set up Webhooks
+1. In your Creem dashboard, go to Developers > Webhooks
+2. Add webhook URL: `https://your-domain.com/api/creem/webhook`
+3. Select events: `checkout.completed`, `payment.succeeded`
+
+#### 5. Test Payment Flow
+1. Set `CREEM_TEST_MODE=true` for testing
+2. Use Creem's test credit cards
+3. Verify credits are added to user accounts
+
+### Payment Flow
+1. User clicks "Buy Credits" 
+2. Frontend calls `/api/creem/create-checkout`
+3. User redirected to Creem payment page
+4. After payment, Creem sends webhook to `/api/creem/webhook`
+5. Credits automatically added to user account
+6. User redirected back to dashboard
+
+### Creem Benefits
+- ✅ Global merchant of record
+- ✅ Automatic tax compliance
+- ✅ Multiple payment methods
+- ✅ Fraud protection
+- ✅ Easy integration
+- ✅ Competitive pricing
+
+---
+
 ### Project Milestone: Pre-Deployment Finalization
 
 - **Date**: June 23, 2024
 - **Status**: All core features are fully functional in the local development environment. Key customizations, including a free trial for new users, have been implemented and documented. The project is now reviewed, finalized, and ready for its first deployment. This marks the successful completion of the local development and debugging phase.
+
+### Project Update: Creem.io Payment Integration
+
+- **Date**: January 20, 2025
+- **Status**: Successfully integrated Creem.io payment system with full bilingual support (English/Chinese). Features include:
+  - Complete credit purchase flow
+  - Webhook handling for automatic credit delivery
+  - Modern payment UI with multiple credit packages
+  - Real-time language switching
+  - Secure payment processing with Creem.io as merchant of record
+  - Production deployment ready

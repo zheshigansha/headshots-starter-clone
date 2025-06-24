@@ -17,7 +17,7 @@ import { Button } from "../ui/button";
 import ClientSideCredits from "./ClientSideCredits";
 import { User } from "@supabase/supabase-js";
 
-const stripeIsConfigured = process.env.NEXT_PUBLIC_STRIPE_IS_ENABLED === "true";
+const cremIsConfigured = process.env.NEXT_PUBLIC_CREEM_IS_ENABLED === "true";
 const packsIsEnabled = process.env.NEXT_PUBLIC_TUNE_TYPE === "packs";
 
 export default function ClientSideUser() {
@@ -92,7 +92,7 @@ export default function ClientSideUser() {
             Packs
           </Link>
         )}
-        {stripeIsConfigured && (
+        {cremIsConfigured && (
           <Link
             href="/get-credits"
             className="text-sm font-medium hover:text-primary transition-colors"
@@ -102,7 +102,7 @@ export default function ClientSideUser() {
         )}
       </nav>
 
-      {stripeIsConfigured && credits[0] && (
+      {cremIsConfigured && credits[0] && (
         <ClientSideCredits creditsRow={credits[0]} />
       )}
       <DropdownMenu>

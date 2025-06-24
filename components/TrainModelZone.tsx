@@ -36,7 +36,7 @@ import { ImageInspectionResult, aggregateCharacteristics } from "@/lib/imageInsp
 
 type FormInput = z.infer<typeof fileUploadFormSchema>;
 
-const stripeIsConfigured = process.env.NEXT_PUBLIC_STRIPE_IS_ENABLED === "true";
+const cremIsConfigured = process.env.NEXT_PUBLIC_CREEM_IS_ENABLED === "true";
 
 export default function TrainModelZone({ packSlug }: { packSlug: string }) {
   const [files, setFiles] = useState<File[]>([]);
@@ -358,7 +358,7 @@ export default function TrainModelZone({ packSlug }: { packSlug: string }) {
               ) : (
                 <>
                   Train Model{" "}
-                  {stripeIsConfigured && <span className="ml-1">(1 Credit)</span>}
+                  {cremIsConfigured && <span className="ml-1">(1 Credit)</span>}
                 </>
               )}
             </Button>
