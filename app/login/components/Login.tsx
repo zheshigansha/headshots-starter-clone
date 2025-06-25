@@ -17,9 +17,9 @@ type Inputs = {
 };
 
 export const Login = ({
-  searchParams,
+  onLoginSuccess,
 }: {
-  searchParams?: { [key: string]: string | string[] | undefined };
+  onLoginSuccess?: () => void;
 }) => {
   const { t } = useI18n();
   const supabase = createClientComponentClient<Database>();
@@ -57,11 +57,6 @@ export const Login = ({
     }
   };
 
-  let inviteToken = null;
-  if (searchParams && "inviteToken" in searchParams) {
-    inviteToken = searchParams["inviteToken"];
-  }
-
   const redirectUrl =
     typeof window !== "undefined"
       ? `${window.location.origin}/auth/callback`
@@ -70,27 +65,21 @@ export const Login = ({
   console.log({ redirectUrl });
 
   const signInWithGoogle = async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
+    await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
         redirectTo: redirectUrl,
       },
     });
-
-    console.log(data, error);
   };
 
   const signInWithMagicLink = async (email: string) => {
-    const { error } = await supabase.auth.signInWithOtp({
+    await supabase.auth.signInWithOtp({
       email,
       options: {
         emailRedirectTo: redirectUrl,
       },
     });
-
-    if (error) {
-      console.log(`Error: ${error.message}`);
-    }
   };
 
   if (isMagicLinkSent) {

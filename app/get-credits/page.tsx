@@ -1,5 +1,5 @@
 'use client';
-
+import { useUser } from '@supabase/auth-helpers-react';
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -52,10 +52,15 @@ export default function GetCreditsPage() {
   const { toast } = useToast();
   const router = useRouter();
   const { t } = useI18n();
-  
+  const user = useUser();
   const isPaymentEnabled = isCreemEnabled();
 
   const handlePurchase = async (pkg: CreditPackage) => {
+    if (!user) {
+      // 跳转到登录页，并带上付款意图参数
+      router.push(`/login?redirectTo=/get-credits?pay=${pkg.id}`);
+      return;
+    }
     if (!pkg.productId) {
       toast({
         title: "Configuration Error",

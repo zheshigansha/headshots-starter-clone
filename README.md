@@ -38,6 +38,23 @@ Live demo **[here](https://getheadshots.ai)**.
 
 - **Free Trial for New Users**: To improve user experience and onboarding, we have modified the default behavior. Newly registered users will now automatically receive **1 free credit**, allowing them to try the service once at no cost. This change was made in `app/astria/train-model/route.ts` by setting the initial credit amount to 1. You can adjust this number based on your operational costs and marketing strategy.
 
+- **Product Experience (2024.06 Update)**
+  - **首页体验 / Homepage Experience**：
+    - 首页仅展示产品介绍、功能亮点、FAQ等内容，不直接展示支付或购买积分入口。
+    - The homepage only displays product introduction, features, and FAQ. There is no direct payment or buy credits button on the homepage.
+
+  - **免费体验 / Free Trial**：
+    - 新用户首次使用AI生成功能时，可免费生成一次。
+    - New users can generate one result for free on their first use of the AI generation feature.
+
+  - **付费限制 / Payment Requirement**：
+    - 当用户第二次点击"生成"时，系统会自动引导用户进入付费/购买积分页面，完成支付后才能继续生成。
+    - When the user clicks "Generate" for the second time, the system will redirect them to the payment page. Only after payment can they continue generating.
+
+  - **付费入口位置 / Payment Entry Location**：
+    - 付费入口仅在用户用完免费额度、再次尝试生成时出现，而不是首页直接展示。
+    - The payment entry only appears after the free trial is used up, and the user tries to generate again. It is not shown on the homepage.
+
 The app is powered by:
 
 - 🚀 [Astria](https://www.astria.ai/) for AI model training & inference
