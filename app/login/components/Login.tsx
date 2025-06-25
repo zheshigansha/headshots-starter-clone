@@ -17,9 +17,9 @@ type Inputs = {
 };
 
 export const Login = ({
-  onLoginSuccess,
+  redirectTo,
 }: {
-  onLoginSuccess?: () => void;
+  redirectTo?: string;
 }) => {
   const { t } = useI18n();
   const supabase = createClientComponentClient<Database>();
@@ -32,6 +32,14 @@ export const Login = ({
     handleSubmit,
     formState: { errors, isSubmitted },
   } = useForm<Inputs>();
+
+  const handleLoginSuccess = () => {
+    if (redirectTo) {
+      window.location.href = redirectTo;
+    } else {
+      window.location.href = '/overview';
+    }
+  };
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     setIsSubmitting(true);
