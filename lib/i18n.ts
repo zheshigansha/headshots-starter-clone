@@ -257,9 +257,11 @@ export const useI18n = create<I18nStore>()(
       setHasHydrated: (state: boolean) => set({ hasHydrated: state }),
       setLocale: (locale: Locale) => set({ locale }),
       t: (key: string) => {
-        const { locale } = get();
+        const { locale, hasHydrated } = get();
+        // Use 'en' as fallback during SSR or before hydration
+        const currentLocale = hasHydrated ? locale : 'en';
         const keys = key.split('.');
-        let value: any = messages[locale];
+        let value: any = messages[currentLocale];
         
         for (const k of keys) {
           value = value?.[k];

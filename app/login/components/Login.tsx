@@ -60,7 +60,9 @@ export const Login = ({
   const redirectUrl =
     typeof window !== "undefined"
       ? `${window.location.origin}/auth/callback`
-      : "";
+      : process.env.NEXT_PUBLIC_SITE_URL 
+        ? `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`
+        : "";
 
   console.log({ redirectUrl });
 
